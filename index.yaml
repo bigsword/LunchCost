@@ -1,0 +1,7 @@
+indexes:
+- kind: LunchRecord
+  properties:
+  - name: user
+  - name: date
+    direction: desc
+

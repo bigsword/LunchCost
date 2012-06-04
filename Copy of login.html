@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<title>My Lunch Cost</title>
+	</head>
+	<body>
+		<div id="outer">
+			<h3>Please choose your name</h3>
+			<div>
+				<form action="/login" method="post">
+					<ul>
+						{% for user in users %}
+						<li><label for="{{user}}"><input type="radio" id="{{user}}" name="user" value="{{user}}" />{{user}}</label></li>
+						{% endfor %}
+					</ul>
+					<div><input type="submit" value="  Login  "></div>
+				</form>
+			</div>
+			<div>
+				<br><br><br>
+				<h3>Or sign up to be a member:</h3>
+				<form action="/signup" method="post">
+					Your Name: <input name="user_name" type="text" size="20" maxlength="40"></input>
+					<div><input type="submit" value="  Sign Up  "></div>
+				</form>
+			</div>
+  	</div>
+	</body>
+</html>

@@ -1,0 +1,129 @@
+<html>
+<head>
+		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<title>My Lunch Cost</title>
+		<script type="text/javascript">
+		function accAdd(arg1,arg2) { 
+			var r1,r2,m; 
+			try{r1 = arg1.toString().split(".")[1].length}catch(e){r1=0} 
+			try{r2 = arg2.toString().split(".")[1].length}catch(e){r2=0} 
+			m = Math.pow(10,Math.max(r1,r2)) 
+			return (arg1*m+arg2*m)/m 
+		} 
+			
+		function caculateDailySum()	{
+			var tables=document.getElementsByTagName("table");
+			
+			for (var i = 0; i < tables.length; i++ ) {
+				// get all the cost amount
+				var total = 0.0;
+				var money_row = tables[i].rows[1];
+				for (var j = 0; j < money_row.cells.length; j++) {
+					var cell = money_row.cells[j];
+					//total += parseFloat(cell.innerText)
+					total = accAdd(total, parseFloat(cell.innerText))
+				}
+
+				if (tables[i].caption.innerText) {
+					tables[i].caption.innerText += " (" + total + "/" + money_row.cells.length + ")"
+				}		
+			}
+  	}
+		
+		window.onload = caculateDailySum;
+		</script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header-wrapper">
+			<header id="header">
+			| <a href="/login">Switch User</a> | <a href="/admin">Admin</a> |  
+			<h1>My Lunch Cost</h1>
+			<h3>and some other things else</h3>
+			</header>
+		</div>
+		<div id="body">
+			<section id="content">
+				{% for day in week %}
+          <table border="1">
+						<caption style="text-align:left">
+              {% for record in day %}
+                {% if forloop.first %}
+    			        {{record.date}}
+								{% endif %}
+              {% endfor %}
+						</caption>
+            <tr>
+              {% for record in day %}
+                <td>{{record.user}}</td>
+              {% endfor %}
+            </tr>
+            <tr>
+              {% for record in day %}
+                <td>{{record.cost_rmb}}</td>
+              {% endfor %}
+            </tr>
+          </table>
+          <br/>
+        {% endfor %}
+      </section>
+      <section id="sidebar">
+				<section id="summary" class="widget">
+				Hi, {{user}} </br> You have <b>{{balance}}</b> yuan left in your account </br></br>
+				The total number in card is {{card_balance}}</br>
+				</section>
+			  <section id="cost" class="widget">
+        <form action="/cost" method="post">
+          <div>
+						<b>Spend</b></br> <input name="user_name" type="hidden" value="{{user}}"></input>
+					</div>
+		      <div>
+			      <label>in the day </label>
+			      <input name="date_month" type="text" size="2" maxlength="2" value="{{today.month}}"></input> -
+			      <input name="date_day" type="text" size="2" maxlength="2" value="{{today.day}}"></input>
+			      <input name="date_year" type="hidden" size="4" maxlength="4" value="{{today.year}}"></input>
+		      </div>
+		      <div>
+			      <label>lunch cost</label>
+			      <input name="cost_rmb" type="text" size="5" maxlength="5" value="8.00"></input>
+		      </div>
+          <div><input type="submit" value="  Submit  "></div>
+				</form>
+				</section>
+        <section id="charge" class="widget">
+        <form action="/charge" method="post">
+          <div>
+						<b>Charge</b></br>(charge date will be today)</br>
+			      <input name="charge_rmb" type="text" size="5" maxlength="5" value="100"></input>
+		      </div>
+          <div><input type="submit" value="  Submit  "></div>
+        </form>
+				</section>
+				<section id="balance" class="widget">
+				<form action="/card_balance" method="post">
+					<div>
+						<b>Update Card Balance</b>
+						<input name="card_balance" type="text" size="7" maxlength="7" value="0"></input>
+						<input name="user_name" type="hidden" value="{{user}}"></input>
+					</div>
+					<div>
+						<input type="submit" value="  Submit  ">
+					</div>
+					<div>
+						</br>Current balance is {{balance_string}} </br> 
+						Expect {{expect_balance}} </br>
+						Newly lost is {{new_lost}}
+          </div>
+				</form>
+				<form action="/forget_it" method="post">
+					<div>
+						<input type="submit" value="  Forget It  ">
+					</div>
+				</form>
+				</section>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
+
