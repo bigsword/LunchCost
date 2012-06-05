@@ -1,0 +1,12 @@
+about user
+---------------
+first check the user_name
+if no user_name
+  check for cokie
+    if no cokie,
+      redirect to user_selecet
+
+os.environ['SERVER_NAME'] == localhost
+
+
+bug: user don't select a user in login, nothing happens.

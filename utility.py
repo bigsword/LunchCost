@@ -10,11 +10,7 @@ __revision__ = '0.1'
 from database import *
 
 def all_users():
-    users = []
-    for user in User.all():
-        users.append(user.name)
-
-    return users
+    return [user.name for user in User.all()]
 
 def balance(user):
     """ This is a cpu consume function

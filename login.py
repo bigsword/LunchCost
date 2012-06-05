@@ -17,7 +17,7 @@ from appengine_utilities import sessions
 import utility
 from database import *
 
-hidden_users = ['Jia Xiangdong', 'Yu Ye', 'Zhang Jizheng']
+hidden_users = ['Bai Jingping', 'Ben Fu', 'Chen Xi', 'Deng Xuegang', 'Dou Jianming', 'Lin Ruhan', 'Wang Lili','Zhou Yi', 'Zhou Jian', 'Jia Xiangdong', 'Yu Ye', 'Zhang Jizheng']
 
 class Login(webapp.RequestHandler):
   def get(self):
@@ -48,11 +48,14 @@ class Login(webapp.RequestHandler):
 
 class SignUp(webapp.RequestHandler):
   def post(self):
-    """TODO maybe the user is already there
-		or the user_name is empty
-    """
-    new_user = User()
-    new_user.name = self.request.get('user_name')
-    new_user.put()
+    for user in utility.all_users():
+      if user == self.request.get('user_name'):
+        self.redirect('/login')
+        return
+
+    if self.request.get('user_name'):
+      new_user = User()
+      new_user.name = self.request.get('user_name')
+      new_user.put()
 
     self.redirect('/login')
